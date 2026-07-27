@@ -19,6 +19,7 @@ Snapshot of the assistant's callable tools (see the app for exact schemas).
 | encode_decode | base64/hex/url/rot13 + md5/sha* + jwt_decode |
 | stats | Exact descriptive statistics for a number list |
 | random_gen | Real randomness: uuid/token/int/dice/shuffle/pick |
+| frames_to_gif | Assemble image frames into an animated GIF (Pillow; served at /g/<id>) |
 | calculator | Exact arithmetic + trig/log/etc |
 | current_datetime | Current date/time (UTC + optional IANA tz) |
 | list_models | Discover available models by capability |
