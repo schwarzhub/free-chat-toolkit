@@ -1,5 +1,4 @@
-<!-- In-chat submissions are proposals only and cannot be merged by the chat. A human maintainer reviews. -->
+<!-- Thanks for contributing! In-chat submissions come in as ISSUES; this template is for pull
+     requests you open directly on GitHub. Nothing merges without human review. -->
 ## Proposal
-<what tool/change and why>
-
-**Conversation reference:** <hash, if submitted via free-chat>
+<what tool/change, and why it's useful>

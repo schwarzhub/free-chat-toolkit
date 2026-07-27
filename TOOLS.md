@@ -22,6 +22,15 @@ Snapshot of the assistant's callable tools (see the app for exact schemas).
 | calculator | Exact arithmetic + trig/log/etc |
 | current_datetime | Current date/time (UTC + optional IANA tz) |
 | list_models | Discover available models by capability |
-| ask_model | Delegate a subtask to another model (e.g. vision) |
+| ask_model | Delegate a subtask to another model (e.g. vision), relaying text + images |
+
+### Context-dependent tools
+Available in certain sessions:
+
+| Tool | What it does |
+|------|--------------|
+| cost_status | The model's view of this chat's running cost + remaining service credits |
+| schedule_followup / list_scheduled / cancel_scheduled | Schedule a follow-up task to run later (saved-key chats) |
+| submit_contribution | File a complaint or tool suggestion as an issue on this repo, from the chat |
 
 Missing something? Suggest it — from within free-chat, or open an issue/PR here.

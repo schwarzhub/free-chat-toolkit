@@ -1,23 +1,18 @@
 # Contributing
 
-## Via free-chat (in-chat tool)
-Ask the assistant to propose a tool/change. It calls a create-only tool that opens either:
-- an **issue**, or
-- a **pull request** that adds `proposals/<hash>.md` describing the change.
+## Via free-chat (in-chat)
+Ask the assistant to file a complaint or propose a tool/change. It opens an **issue** here — it cannot
+open PRs, merge, or accept anything (by design). If it drafts an implementation, the code is included
+in the issue for a maintainer to review and turn into a change.
 
-Every in-chat submission includes a **conversation reference hash** (see the README). The chat has
-**no ability to merge or accept** anything — proposals wait for human review.
+Every in-chat submission includes a **conversation reference hash** (see the README) — an opaque
+fingerprint, no private content.
 
-## Proposal format (`proposals/<hash>.md`)
-```
-# <short title>
-
-**Conversation reference:** <hash>
-**Submitted:** via free-chat (community, unverified)
-
-<the proposed tool or change, why it's useful, rough shape of inputs/outputs>
-```
+## Directly on GitHub
+- Open an **issue** with your idea or bug, or
+- Send a **pull request** (fork → branch → PR). For a longer written proposal, add a file under
+  `proposals/`; for a concrete tool, include the implementation.
 
 ## Review
-A maintainer triages issues/PRs, and implements accepted tools in the free-chat app. Thanks for
+A maintainer triages issues/PRs and implements accepted tools in the free-chat app. Thanks for
 contributing!
