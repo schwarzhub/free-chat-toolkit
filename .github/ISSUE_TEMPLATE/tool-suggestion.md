@@ -1,13 +1,16 @@
 ---
-name: Tool suggestion
-about: Suggest a new tool or an improvement to an existing one
+name: Capability suggestion (tool / skill / MCP)
+about: Suggest building or changing a tool, skill, or MCP integration
 labels: [suggestion]
 ---
 
-**What should the tool do?**
+**Kind:** tool / skill / MCP integration / other
+
+**What should it do?**
 
 **Why is it useful?**
 
-**Rough inputs/outputs:**
+**Rough shape** (tool: inputs/outputs; skill: the procedure; MCP: which external API/server):
 
-<!-- In-chat submissions include a conversation reference hash automatically. -->
+<!-- Please check the README's "Out of bounds" list first. In-chat submissions include a conversation
+     reference hash automatically. -->
