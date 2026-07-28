@@ -24,6 +24,7 @@ Snapshot of the assistant's callable tools (see the app for exact schemas).
 | current_datetime | Current date/time (UTC + optional IANA tz) |
 | list_models | Discover available models by capability |
 | ask_model | Delegate a subtask to another model (e.g. vision), relaying text + images |
+| run_code | Run Python in an OFF-BOX sandbox (no-network GitHub Actions runner) — stdout/stderr/exit |
 | fetch_rendered | JS-rendered fetch via a headless browser (SPAs); heavy, rate-limited |
 
 ### Context-dependent tools

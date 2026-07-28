@@ -24,7 +24,7 @@ from .data import (JSON_QUERY, json_query, DIFF_TEXT, diff_text, REGEX_TEST, reg
 from .media import FRAMES_TO_GIF, frames_to_gif
 from .modeltools import (LIST_MODELS, list_models, ASK_MODEL, ask_model, run_ask_model)
 from .schemas import (COST_STATUS, SCHEDULE_FOLLOWUP, LIST_SCHEDULED, CANCEL_SCHEDULED,
-                      submit_contribution_schema, parse_duration)
+                      submit_contribution_schema, parse_duration, RUN_CODE)
 
 # Category groups → advertise a subset instead of everything. Keys are stable; values are the
 # schemas that are always safe to show. Gated tools (web_search needs SearXNG, fetch_rendered needs

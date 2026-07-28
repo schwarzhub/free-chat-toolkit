@@ -110,3 +110,27 @@ def submit_contribution_schema(allow_pr: bool = False) -> dict:
         },
     }
 
+
+
+# run_code — off-box sandboxed execution (callable injected in api.py; needs the client IP for
+# rate-limiting). Advertised only when a GitHub Actions token is configured. See runcode.py.
+RUN_CODE = {
+    "type": "function",
+    "function": {
+        "name": "run_code",
+        "description": ("Run Python in a SANDBOX that is off this server (a fresh, no-network, "
+                        "resource-capped environment) and get stdout / stderr / exit code back. Use "
+                        "for real computation, data wrangling, quick simulations, or validating a "
+                        "tool implementation — beyond what calculator/stats/regex_test cover. "
+                        "Standard library ONLY: no network access, no pip installs. It spins up a "
+                        "fresh runner, so it takes ~30-90s and the user waits; if it's still going "
+                        "you'll get a run URL to check back. Keep code self-contained; print results."),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "code": {"type": "string", "description": "The self-contained Python 3 source to execute."},
+            },
+            "required": ["code"],
+        },
+    },
+}
