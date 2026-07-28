@@ -24,6 +24,7 @@ Snapshot of the assistant's callable tools (see the app for exact schemas).
 | current_datetime | Current date/time (UTC + optional IANA tz) |
 | list_models | Discover available models by capability |
 | ask_model | Delegate a subtask to another model (e.g. vision), relaying text + images |
+| fetch_rendered | JS-rendered fetch via a headless browser (SPAs); heavy, rate-limited |
 
 ### Context-dependent tools
 Available in certain sessions:
