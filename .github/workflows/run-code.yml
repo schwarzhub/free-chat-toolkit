@@ -33,6 +33,7 @@ jobs:
 
       - name: run (no-network sandbox)
         run: |
+          docker pull -q python:3.12-slim >/dev/null 2>&1 || true   # keep pull noise out of stderr
           set +e
           timeout 25 docker run --rm --network none \
             --memory 512m --cpus 1 --pids-limit 256 \
