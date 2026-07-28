@@ -35,5 +35,6 @@ Available in certain sessions:
 | cost_status | The model's view of this chat's running cost + remaining service credits |
 | schedule_followup / list_scheduled / cancel_scheduled | Schedule a follow-up task to run later (saved-key chats) |
 | submit_contribution | File a complaint or tool suggestion as an issue on this repo, from the chat |
+| run_local | Run a shell command on **your own machine** via a runner you start (`curl -s https://free-chat.ai/api/runner/script \| python3 - --key YOURKEY`). You approve each command in your terminal by default (`--yolo` to auto-run). Only appears while your runner is connected. |
 
 Missing something? Suggest it — from within free-chat, or open an issue/PR here.

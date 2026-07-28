@@ -134,3 +134,30 @@ RUN_CODE = {
         },
     },
 }
+
+RUN_LOCAL = {
+    "type": "function",
+    "function": {
+        "name": "run_local",
+        "description": ("Run a shell command on the USER'S OWN computer, through the local runner they "
+                        "started and linked to this chat. Use this when the user asks you to do "
+                        "something on THEIR machine — inspect or edit their files, run their tests, "
+                        "use git, check installed tools, run a script in their environment. Unlike "
+                        "run_code (an isolated off-box sandbox), this touches the user's real files "
+                        "and network. By default the user must APPROVE each command in their terminal "
+                        "before it runs, so: send ONE clear command at a time, explain what it does, "
+                        "and expect a short wait for them to approve. The result gives stdout, stderr, "
+                        "exit_code, and whether they approved it. This tool only appears when a runner "
+                        "is actually connected for this key."),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "code": {"type": "string",
+                         "description": "A single shell command (or short script) to run on the user's machine, "
+                                        "in the runner's working directory. Prefer read-only/inspection "
+                                        "commands unless the user asked you to change something."},
+            },
+            "required": ["code"],
+        },
+    },
+}
