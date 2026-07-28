@@ -68,6 +68,11 @@ matures):
   Large attack surface (CVEs, decompression/CPU bombs). Bounded **pure-library** operations only.
 - **No compute offload or heavy background jobs** on the public box — no mining, no long-running or
   resource-hungry processing. Heavy work belongs **off-box** (a fleet worker), not here.
+- **No paid dependencies.** A tool, API, or MCP that requires **direct payment** — a paid API key,
+  metered/per-call billing, a paid MCP host — will almost certainly **not** be accepted: it would bill
+  the operator per use and break the free, ad-funded model. **Free APIs are welcome** (like the free
+  ones already wired in — OpenStreetMap, Wikipedia, …), and a clean **MCP that wraps a *free* API** to
+  make it easier to use is a great contribution.
 - **No silent access to third-party accounts**, no send-without-approval, no tracking/profiling, no
   scrapers-for-abuse, and no exploit/malware helpers.
 
@@ -83,8 +88,12 @@ least-privilege token, and by branch protection on `main`).
 
 ## Layout
 
-- [`tools/`](tools) — the actual tool implementations (schema + function), synced from the app.
+Contributions are organized by kind:
+
+- [`tools/`](tools) — the actual **tool** implementations (schema + function), synced from the app.
+- [`skills/`](skills) — **skills** (instructions/procedures the model reads). *None yet — propose one.*
+- [`mcps/`](mcps) — **MCP integrations** (connecting an external server's tools). *None yet — propose one.*
 - [`TOOLS.md`](TOOLS.md) — human-readable catalog of the tools live today.
-- [`proposals/`](proposals) — longer written proposals (tools, skills, or MCP integrations).
+- [`proposals/`](proposals) — longer written proposals for any of the above.
 
 Licensed under [MIT](LICENSE).
