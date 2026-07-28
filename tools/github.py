@@ -1,7 +1,7 @@
 """GitHub API client for community contributions — CREATE-ONLY.
 
 By design this module implements ONLY the endpoints needed to OPEN an issue or a proposal pull
-request on the public free-chat-tools repo. There is deliberately NO merge/close/accept/delete
+request on the public free-chat-toolkit repo. There is deliberately NO merge/close/accept/delete
 call anywhere here: the chat can propose, never accept. A human maintainer reviews and merges
 (also enforced by branch protection on the repo's main branch). The token is least-privilege and
 lives only in the server env — never exposed to the model or the client.

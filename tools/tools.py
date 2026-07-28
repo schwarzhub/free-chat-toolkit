@@ -1424,17 +1424,19 @@ def submit_contribution_schema(allow_pr: bool = False) -> dict:
     """The tool schema, shaped by whether the server's token can open PRs (else issue-only)."""
     types = ["issue", "pull_request"] if allow_pr else ["issue"]
     how = ("as an ISSUE (complaint/request) or a proposal PULL REQUEST" if allow_pr
-           else "as an ISSUE (complaints, requests, or a proposed tool — include the code and it "
-                "goes in the issue for a maintainer to turn into a PR)")
+           else "as an ISSUE (complaints, requests, or a proposed capability — include any code and "
+                "it goes in the issue for a maintainer to turn into a PR)")
     return {
         "type": "function",
         "function": {
             "name": "submit_contribution",
-            "description": (f"File a complaint or suggest a change/new tool on the PUBLIC "
-                            f"free-chat-tools repo, on the user's behalf — {how}. You can include "
-                            f"actual proposed `code` for the tool. IMPORTANT: you can only OPEN "
+            "description": (f"File a complaint, or propose building/changing a TOOL, SKILL, or MCP "
+                            f"integration on the PUBLIC free-chat-toolkit repo, on the user's behalf "
+                            f"— {how}. You can include proposed `code`. IMPORTANT: you can only OPEN "
                             f"submissions — you can NEVER merge or accept them; a human maintainer "
-                            f"reviews. A conversation reference hash is attached automatically. "
+                            f"reviews. A conversation reference hash is attached automatically. Mind "
+                            f"the repo's out-of-bounds rules (no code sandbox, no exploitable/heavy-"
+                            f"binary tools like ffmpeg, no compute offload — security & privacy first). "
                             f"Confirm with the user before submitting."),
             "parameters": {
                 "type": "object",
@@ -1442,9 +1444,11 @@ def submit_contribution_schema(allow_pr: bool = False) -> dict:
                     "type": {"type": "string", "enum": types,
                              "description": "'issue' for a complaint/request/proposal."
                                             + (" 'pull_request' to open a proposal PR." if allow_pr else "")},
+                    "category": {"type": "string", "enum": ["tool", "skill", "mcp", "other"],
+                                 "description": "What kind of capability this concerns (default 'tool')."},
                     "title": {"type": "string", "description": "Short title of the complaint/suggestion."},
-                    "body": {"type": "string", "description": "Details: what's wrong or what the tool/change should do, and why."},
-                    "code": {"type": "string", "description": "Optional: proposed tool implementation — included for the maintainer to review."},
+                    "body": {"type": "string", "description": "Details: what's wrong or what the capability should do, and why."},
+                    "code": {"type": "string", "description": "Optional: proposed implementation — included for the maintainer to review."},
                 },
                 "required": ["type", "title", "body"],
             },
