@@ -1,0 +1,71 @@
+name: run-code
+run-name: run-code ${{ inputs.rid }}
+
+# Bounded, sandboxed execution of a proposed tool / validation snippet for this toolkit.
+# The submitted code runs in a NO-NETWORK, resource-capped container inside the ephemeral runner,
+# with NO token permissions and NO secrets in scope. Result is uploaded as a short-lived artifact.
+on:
+  workflow_dispatch:
+    inputs:
+      rid:
+        description: "correlation id (alnum)"
+        required: true
+      code_b64:
+        description: "gzip+base64 of the Python source to run"
+        required: true
+
+permissions: {}          # the job's GITHUB_TOKEN gets nothing
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: decode
+        env:
+          CODE_B64: ${{ inputs.code_b64 }}     # via env, never interpolated into the shell
+        run: |
+          mkdir -p job
+          printf '%s' "$CODE_B64" | base64 -d | gunzip > job/user.py || { echo "decode failed" >&2; exit 2; }
+          bytes=$(wc -c < job/user.py)
+          echo "decoded $bytes bytes"
+          [ "$bytes" -le 200000 ] || { echo "code too large" >&2; exit 2; }
+
+      - name: run (no-network sandbox)
+        run: |
+          set +e
+          timeout 25 docker run --rm --network none \
+            --memory 512m --cpus 1 --pids-limit 256 \
+            -v "$PWD/job":/work -w /work python:3.12-slim \
+            python -I -B user.py > out.txt 2> err.txt
+          echo $? > code.txt
+          set -e
+
+      - name: package result
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json
+          def rd(p, cap=100_000):
+              try:
+                  b = open(p, "rb").read(cap + 1)
+                  return b[:cap].decode("utf-8", "replace"), len(b) > cap
+              except Exception:
+                  return "", False
+          out, ot = rd("out.txt"); err, et = rd("err.txt")
+          try:
+              rc = int(open("code.txt").read().strip())
+          except Exception:
+              rc = None
+          json.dump({"exit_code": rc, "stdout": out, "stdout_truncated": ot,
+                     "stderr": err, "stderr_truncated": et,
+                     "timed_out": rc == 124}, open("result.json", "w"))
+          PY
+
+      - name: upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: result-${{ inputs.rid }}
+          path: result.json
+          retention-days: 1
