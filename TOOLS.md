@@ -23,8 +23,9 @@ Snapshot of the assistant's callable tools (see the app for exact schemas).
 | calculator | Exact arithmetic + trig/log/etc |
 | current_datetime | Current date/time (UTC + optional IANA tz) |
 | list_models | Discover available models by capability |
+| list_tools | Discover the tools actually available in this session (name + description) — ground truth over training data |
 | ask_model | Delegate a subtask to another model (e.g. vision), relaying text + images |
-| run_code | Run Python in an OFF-BOX sandbox (no-network GitHub Actions runner) — stdout/stderr/exit |
+| run_code | Run Python in an OFF-BOX sandbox (no-network GitHub Actions runner) — stdout/stderr/exit. Preinstalled: numpy, pandas, matplotlib, scipy, sympy, beautifulsoup4, lxml, pillow, requests |
 | fetch_rendered | JS-rendered fetch via a headless browser (SPAs); heavy, rate-limited |
 
 ### Context-dependent tools

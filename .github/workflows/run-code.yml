@@ -31,14 +31,36 @@ jobs:
           echo "decoded $bytes bytes"
           [ "$bytes" -le 200000 ] || { echo "code too large" >&2; exit 2; }
 
+      # A curated, read-only set of pure-consumer packages, installed on the RUNNER (which has
+      # network) into ./libs using the exact sandbox image so the ABI matches, then mounted READ-ONLY
+      # into the no-network exec container. The sandbox stays network-isolated, resource-capped, and
+      # ephemeral — these are libraries, not new binaries or network access. Cached across runs.
+      - name: cache sandbox libs
+        id: libcache
+        uses: actions/cache@v4
+        with:
+          path: libs
+          key: runcode-libs-v1-py312-numpy-pandas-matplotlib-scipy-bs4-lxml-pillow-requests-sympy
+
+      - name: install curated packages (cache miss only)
+        if: steps.libcache.outputs.cache-hit != 'true'
+        run: |
+          docker pull -q python:3.12-slim >/dev/null 2>&1 || true
+          mkdir -p libs
+          docker run --rm -v "$PWD/libs":/libs python:3.12-slim \
+            pip install --no-cache-dir --target /libs \
+            numpy pandas matplotlib scipy beautifulsoup4 lxml pillow requests sympy
+
       - name: run (no-network sandbox)
         run: |
           docker pull -q python:3.12-slim >/dev/null 2>&1 || true   # keep pull noise out of stderr
           set +e
-          timeout 25 docker run --rm --network none \
-            --memory 512m --cpus 1 --pids-limit 256 \
-            -v "$PWD/job":/work -w /work python:3.12-slim \
-            python -I -B user.py > out.txt 2> err.txt
+          timeout 45 docker run --rm --network none \
+            --memory 1024m --cpus 1 --pids-limit 256 \
+            -v "$PWD/job":/work -v "$PWD/libs":/libs:ro \
+            -e PYTHONPATH=/libs -e MPLBACKEND=Agg -e HOME=/work \
+            -w /work python:3.12-slim \
+            python -B -s user.py > out.txt 2> err.txt
           echo $? > code.txt
           set -e
 

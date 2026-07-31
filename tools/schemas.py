@@ -122,9 +122,11 @@ RUN_CODE = {
                         "resource-capped environment) and get stdout / stderr / exit code back. Use "
                         "for real computation, data wrangling, quick simulations, or validating a "
                         "tool implementation — beyond what calculator/stats/regex_test cover. "
-                        "Standard library ONLY: no network access, no pip installs. It spins up a "
-                        "fresh runner, so it takes ~30-90s and the user waits; if it's still going "
-                        "you'll get a run URL to check back. Keep code self-contained; print results."),
+                        "Preinstalled: numpy, pandas, matplotlib (use Agg / savefig to a file or "
+                        "base64), scipy, sympy, beautifulsoup4, lxml, pillow, requests — plus the "
+                        "standard library. NO network (requests will fail) and no other pip installs. "
+                        "It spins up a fresh runner, so it takes ~30-90s and the user waits; if it's "
+                        "still going you'll get a run URL to check back. Keep code self-contained; print results."),
         "parameters": {
             "type": "object",
             "properties": {
@@ -158,6 +160,26 @@ RUN_LOCAL = {
                                         "commands unless the user asked you to change something."},
             },
             "required": ["code"],
+        },
+    },
+}
+
+LIST_TOOLS = {
+    "type": "function",
+    "function": {
+        "name": "list_tools",
+        "description": ("List the tools actually available to you in THIS session, with a short "
+                        "description of each. Use it to ground yourself in your real, current "
+                        "capabilities instead of your training data — new tools may exist that you "
+                        "don't know about, and some (e.g. run_local) only appear in certain sessions. "
+                        "Call it when unsure what you can do, or before telling the user your abilities."),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string",
+                          "description": "Optional case-insensitive substring to filter tool names/descriptions."},
+            },
+            "required": [],
         },
     },
 }
