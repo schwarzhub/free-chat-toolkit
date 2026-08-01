@@ -12,9 +12,9 @@ Goal: go from a paper to a **reproduction report** — "given the authors' code 
 numbers come out?" Be scrupulously honest; a failed or partial reproduction reported clearly is a success.
 
 ## 1. Locate the materials
-- `find_paper_code*` (Papers With Code / repo links in the paper) and `resolve_doi*` to get the paper's
-  data/code availability statement. Look for a code repo (GitHub/GitLab), a data archive (OSF, Zenodo,
-  Dataverse, ICPSR), and a replication package DOI.
+- `find_paper_code*` (repo URLs in the paper's text + archived data/software DOIs on Zenodo/OSF/Dryad)
+  and `resolve_doi*` to get the paper's data/code availability statement. Look for a code repo
+  (GitHub/GitLab), a data archive (OSF, Zenodo, Dataverse, Dryad, ICPSR), and a replication-package DOI.
 - If materials aren't linked, `web_search` the title + "replication data"/"code"; check the author site.
 - **Record provenance**: exact repo URL + commit/tag, data DOI + version. Reproducibility starts with
   pinning what you ran.
