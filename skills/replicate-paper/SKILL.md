@@ -32,14 +32,25 @@ numbers come out?" Be scrupulously honest; a failed or partial reproduction repo
   - **Bounded compute** — the sandbox is time/memory-capped. If the full pipeline won't fit, reproduce the
     **specific headline result** (one table/figure) rather than the whole paper, and say so.
   - **Set the seed** the paper specifies; if none, report that non-determinism limits exact reproduction.
-  - Non-Python (R/Stata) materials: translate the *specific* estimation you're checking into Python
-    (pandas/statsmodels-style) and note it's a re-implementation, not a run of the original code.
+  - **Non-Python (R/Stata) materials — the common case in applied social science.** The sandbox has
+    numpy/pandas/scipy/matplotlib/sympy (**no statsmodels, no R, no Stata**); `pandas.read_stata`/`read_sas`
+    can read `.dta`/`.sas7bdat`. You can *re-implement* a specific estimator (OLS via `numpy.linalg.lstsq`;
+    cluster-robust / HC standard errors by hand), but a re-implementation **silently changes** missing-data
+    handling, fixed-effect absorption, SE/df corrections, and sort-order/RNG — so a match may be luck and a
+    mismatch tells you little. It is **NOT a reproduction**; it gets its own verdict (step 4) and can never
+    earn Reproduced/Not-reproduced. Prefer running the authors' *original code* wherever the sandbox can.
 - Capture: the numbers you got, runtime, and any deviations you had to make.
 
 ## 4. Compare and report
 Produce a **reproduction report**:
-- **Verdict per result**: Reproduced ✅ / Reproduced-with-deviations ◐ / Not reproduced ✗ / Not attempted ▫
-  (with why), for each headline number.
+- **Verdict per result** (each headline number):
+  - **Reproduced ✅ / Reproduced-with-deviations ◐ / Not reproduced ✗** — *only when you ran the authors'
+    original code.* Fix the **tolerance up front** so verdicts are consistent (e.g., point estimate within
+    display rounding **and** same sign/significance → ✅; within a stated band → ◐; outside → ✗).
+  - **Re-implemented — indicative only ◑** — you wrote *independent* code (e.g., a Stata model translated
+    to numpy). Show your number vs. reported, but **never map it to ✅/✗**: a re-implementation can't
+    confirm or refute reproduction, only surface a discrepancy worth investigating.
+  - **Not attempted ▫** — materials unavailable / restricted / beyond sandbox compute, with why.
 - **Side-by-side**: reported value vs. your value (point + uncertainty), and the % / SE discrepancy.
 - **Deviations**: every change you made (subset of the pipeline, re-implementation, seed, environment,
   data version) — these are the caveats a reader needs.

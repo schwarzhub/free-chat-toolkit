@@ -17,13 +17,21 @@ A good summary is not a shorter abstract. It reconstructs the paper's **argument
    title, or `fetch_url` / `read_document*` for a URL or uploaded PDF.
 2. Work from the **full text** whenever available — the abstract oversells and omits the caveats. If only
    the abstract is reachable, say so and mark the summary "abstract-only (design not verified)."
+3. **Verify identity before summarizing.** Confirm the version (working paper vs published; arXiv v1 vs
+   v3 — numbers change across versions), and check for a **retraction / correction / erratum**
+   (`resolve_doi*` / Crossref flag these). Summarizing a retracted paper without flagging it is a failure.
 
 ## Read for structure, then write to this template
 Extract these; if the paper doesn't answer one, write "not stated" (an informative absence).
 
 - **Question & motivation** — the specific question, and the gap/puzzle it addresses.
 - **Claim** — the central finding in one sentence, *with direction and magnitude* ("a 1 SD increase in X
-  raises Y by ~3pp"), not "X affects Y."
+  raises Y by ~3pp"), not "X affects Y." **Anchor the magnitude to a specific table/figure/line in the
+  full text.** Abstract-only, or a number you can't point to → give the *direction* and write "magnitude
+  not extracted." Never synthesize a plausible-looking coefficient — an unanchored number is the single
+  likeliest place this skill fabricates.
+- **Multi-study papers** (several experiments / many main tables): produce one *Design & Claim* block per
+  study, then a synthesis — don't force the single-design template onto a multi-study paper.
 - **Design & identification** — THE core of the summary. What kind of evidence is this
   (RCT / natural experiment / panel / cross-section / observational / simulation / theory)? What is the
   **identifying variation**, and what must be true for the estimate to be causal (the identifying

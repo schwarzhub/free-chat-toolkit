@@ -17,9 +17,11 @@ before a real referee finds them. The value comes from **distinct perspectives**
   does — a reviewer reads for the argument first.
 
 ## 2. Convene a panel (distinct referees, distinct lenses)
-Use **`ask_model` to run each referee as a separate model/persona** so critiques are genuinely independent,
-not one voice rephrased. Give each a lens and the standard referee brief (summary → strengths → major
-concerns → minor concerns → recommendation). Suggested panel (pick 3–5 by field):
+Use **`ask_model` to run each referee as a separate model/persona** to get past one prompt's blind spots.
+Be honest about the limit: different models share training data and RLHF tendencies, so this broadens
+coverage — it is **not** epistemic independence, and same-family models share blind spots. Give each a
+lens and the standard referee brief (summary → strengths → major concerns → minor concerns →
+recommendation). Suggested panel (pick 3–5 by field):
 - **Methods/identification referee** — is the design sound? are the identifying assumptions credible and
   tested? are the stats right (power, multiple testing, spec fragility)?
 - **Contribution/novelty referee** — what's actually new vs. prior work? is the framing honest?
@@ -30,6 +32,17 @@ concerns → minor concerns → recommendation). Suggested panel (pick 3–5 by 
   confound, the cherry-picked spec. Instructed to be harsh but fair.
 
 Each returns a structured referee report and a recommendation (accept / minor / major / reject).
+
+## 2b. Ground every critique (before synthesizing)
+Referees hallucinate — inventing a missing citation, a table that isn't there, or a statistical error
+that doesn't exist. A confidently-wrong "fatal flaw" costs the author real revision time, and the
+meta-review will amplify it. So tag each concern:
+- `verifiable-in-text` — quotes/points to a specific section of the manuscript.
+- `requires-external-check` — a factual/literature claim ("ignores Smith 2019") to confirm, not assume.
+- `speculative` — a hunch worth raising but unverified.
+
+Any asserted **technical error** ("your SEs are wrong") must **show the calculation/code** or be
+downgraded to a *question*. Drop or clearly flag ungrounded critiques before the meta-review.
 
 ## 3. Meta-review
 Synthesize the reports into a single **meta-review**: the consensus, the disagreements (and who's right),
@@ -46,8 +59,11 @@ Turn the meta-review into an actionable, prioritized plan:
   was resolved (feeds `reviewer-response`).
 
 ## Guardrails
-- **Distinct models/personas matter** — a single model wearing five hats converges to one view; spread
-  referees across different models via `ask_model` so the criticism is real.
+- **Spread referees across different models** via `ask_model` — a single model wearing five hats converges
+  to one view — but treat this as *broader coverage of blind spots*, not independent expertise (see §2).
+- **Confidentiality** — never run this on a manuscript you are **refereeing under confidential review**,
+  or anyone's unpublished work you don't have the right to share: pasting it into a third-party tool can
+  breach the journal's confidentiality. Pre-reviewing *your own* draft is the intended use.
 - **Calibrate to the venue** — a top-5 journal bar and a workshop bar are different reviews; don't apply
   crushing standards to a note, or a soft pass to a flagship submission.
 - **Specific, not generic** — "add robustness checks" is useless; "the DiD needs a parallel-trends
