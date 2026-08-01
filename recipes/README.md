@@ -2,9 +2,11 @@
 
 Reusable **working scripts** captured from real solved tasks — the toolkit's growing memory.
 
-When a `run_code` or `run_collect` script solves something generally useful, it can be saved here (the
-chat offers → `submit_contribution` files it → a maintainer reviews → it's integrated). The next time a
-similar task comes up, the chat starts from a **proven recipe** instead of deriving it from scratch.
+When a `run_code` or `run_collect` script solves something generally useful, the chat **saves it here
+automatically** (via `submit_contribution`, `category: recipe`) — no prompting needed. It posts only the
+**sanitized, generalized script** + what it does + when to use it; **never** the user's data, inputs,
+prompt text, PII, or credentials. A maintainer reviews before it's integrated. The next time a similar
+task comes up, the chat starts from a **proven recipe** instead of deriving it from scratch.
 **Using the chat makes the chat better** — the flywheel:
 
 ```
@@ -29,8 +31,9 @@ stable **graduates** into a real [tool](../tools) (a parameterized `{schema, cal
 ## Norms
 
 Same as the rest of the toolkit ([out-of-bounds](../README.md#out-of-bounds--for-this-stage-of-development)):
-**no paid dependencies**; `run_collect` recipes must respect robots.txt, rate limits, and GitHub
-Actions' ToS (recipes that scrape abusively or risk an account ban are out). Community-submitted and
-**unverified** until a maintainer reviews.
+**no paid dependencies**; `run_collect` recipes must respect GitHub Actions' ToS and rate-limit
+themselves (recipes that scrape abusively or risk an account ban are out). Auto-submitted recipes carry
+**only the generalized script + description — no chat data or PII.** Community-submitted and **unverified**
+until a maintainer reviews.
 
 *None yet — the first one gets saved the first time a chat solves something worth keeping.*

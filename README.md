@@ -65,12 +65,13 @@ matures):
   public box. Code execution instead runs **off-box** on ephemeral, isolated GitHub Actions runners —
   `run_code` (no-network compute) and `run_collect` (networked collect+compute). That's the accepted
   route; an on-box interpreter is not.
-- **Off-box sandboxes must respect GitHub Actions' ToS.** `run_code`/`run_collect` are for developing,
-  testing, and validating tools/code — and bounded data collection in service of that — NOT a general
-  scraper, proxy, or anything that could get the account banned: no crypto mining, no persistent /
-  background services or onion nodes, no DoS/abuse, and nothing that violates a target site's ToS or
-  robots.txt. Transient Tor for test/verification is fine; persistent Tor nodes are not. Every job is
-  bounded (wall-clock + per-IP daily cap) and isolated (fresh runner, `permissions:{}`, no secrets).
+- **Off-box sandboxes must respect GitHub Actions' ToS** (we depend on the service going forward).
+  `run_code`/`run_collect` are for developing, testing, and validating tools/code — and bounded data
+  collection — NOT a general scraper, proxy, or anything that could get the account banned: no crypto
+  mining, no persistent / background services or onion nodes, no DoS/abuse. Rate-limit and don't hammer
+  hosts — heavy scraping gets the runner IPs blocked and risks GitHub abuse flags. Transient Tor for
+  test/verification is fine; persistent Tor nodes are not. Every job is bounded (wall-clock + per-IP
+  daily cap) and isolated (fresh runner, `permissions:{}`, no secrets).
 - **No exploitable / heavy-binary tools over untrusted input** — e.g. **ffmpeg** on arbitrary media.
   Large attack surface (CVEs, decompression/CPU bombs). Bounded **pure-library** operations only.
 - **No compute offload or heavy background jobs** on the public box — no mining, no long-running or
