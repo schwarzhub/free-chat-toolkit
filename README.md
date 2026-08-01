@@ -61,9 +61,16 @@ maintainer trace/deduplicate a submission.
 so some capabilities are **explicitly off the table right now** (to be revisited as the infrastructure
 matures):
 
-- **No code-execution sandbox.** No running arbitrary user/model code (Python/JS/shell) on the box —
-  too big and too risky at this stage. *(The safe future route is WASM/Pyodide or a separate isolated
-  worker, not an on-box tool.)*
+- **No code execution ON THE BOX.** No running arbitrary user/model code (Python/JS/shell) on the
+  public box. Code execution instead runs **off-box** on ephemeral, isolated GitHub Actions runners —
+  `run_code` (no-network compute) and `run_collect` (networked collect+compute). That's the accepted
+  route; an on-box interpreter is not.
+- **Off-box sandboxes must respect GitHub Actions' ToS.** `run_code`/`run_collect` are for developing,
+  testing, and validating tools/code — and bounded data collection in service of that — NOT a general
+  scraper, proxy, or anything that could get the account banned: no crypto mining, no persistent /
+  background services or onion nodes, no DoS/abuse, and nothing that violates a target site's ToS or
+  robots.txt. Transient Tor for test/verification is fine; persistent Tor nodes are not. Every job is
+  bounded (wall-clock + per-IP daily cap) and isolated (fresh runner, `permissions:{}`, no secrets).
 - **No exploitable / heavy-binary tools over untrusted input** — e.g. **ffmpeg** on arbitrary media.
   Large attack surface (CVEs, decompression/CPU bombs). Bounded **pure-library** operations only.
 - **No compute offload or heavy background jobs** on the public box — no mining, no long-running or
