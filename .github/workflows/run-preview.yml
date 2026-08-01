@@ -1,0 +1,81 @@
+name: run-preview
+run-name: run-preview ${{ inputs.rid }}
+
+# TRANSIENT live web preview — serves a submitted app on an ephemeral GitHub runner and exposes it via
+# a free, account-less cloudflare quick tunnel (https://<random>.trycloudflare.com) for a BOUNDED window,
+# then exits. For web design: build a page/app, get a live URL to click. permissions:{}, no secrets.
+# This is a TRANSIENT task (short hold) — NOT persistent hosting (that would violate Actions ToS).
+on:
+  workflow_dispatch:
+    inputs:
+      rid:
+        description: "correlation id (alnum)"
+        required: true
+      code_b64:
+        description: "gzip+base64 of the app (a single HTML file, or a python app serving on port 8000)"
+        required: true
+      hold_min:
+        description: "minutes to keep the preview live (max 30)"
+        required: false
+        default: "15"
+
+permissions: {}
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: decode
+        env:
+          CODE_B64: ${{ inputs.code_b64 }}
+        run: |
+          mkdir -p app
+          printf '%s' "$CODE_B64" | base64 -d | gunzip > app/main || { echo "decode failed" >&2; exit 2; }
+          bytes=$(wc -c < app/main); echo "decoded $bytes bytes"
+          [ "$bytes" -le 500000 ] || { echo "app too large" >&2; exit 2; }
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: serve the app on :8000
+        run: |
+          cd app
+          if head -c 500 main | grep -qiE '<!doctype|<html'; then
+            cp main index.html
+            echo "serving static HTML"
+            nohup python3 -m http.server 8000 >/dev/null 2>&1 &
+          else
+            cp main app.py
+            echo "running python app (expects to bind port 8000)"
+            PORT=8000 nohup python3 app.py >server.log 2>&1 &
+          fi
+          sleep 4
+
+      - name: tunnel + capture URL
+        env:
+          HOLD: ${{ inputs.hold_min }}
+        run: |
+          wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O cloudflared && chmod +x cloudflared
+          ./cloudflared tunnel --url http://localhost:8000 --no-autoupdate > cf.log 2>&1 &
+          URL=""
+          for i in $(seq 1 45); do
+            URL=$(grep -oE 'https://[a-z0-9-]+\.trycloudflare\.com' cf.log | head -1)
+            [ -n "$URL" ] && break
+            sleep 2
+          done
+          H=$(echo "$HOLD" | tr -cd '0-9'); [ -n "$H" ] || H=15; [ "$H" -gt 30 ] && H=30
+          echo "H=$H" >> "$GITHUB_ENV"
+          python3 -c "import json; json.dump({'url': '$URL', 'hold_min': $H}, open('result.json','w'))"
+          echo "preview url: ${URL:-<none>} (hold ${H}m)"
+
+      - name: publish url (early — retrievable while the job holds)
+        uses: actions/upload-artifact@v4
+        with:
+          name: result-${{ inputs.rid }}
+          path: result.json
+          retention-days: 1
+
+      - name: hold the tunnel, then exit
+        run: sleep $(( H * 60 ))
