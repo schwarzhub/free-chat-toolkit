@@ -27,6 +27,7 @@ Snapshot of the assistant's callable tools (see the app for exact schemas).
 | ask_model | Delegate a subtask to another model (e.g. vision), relaying text + images |
 | run_code | Run Python in an OFF-BOX sandbox (no-network GitHub Actions runner) — stdout/stderr/exit. Preinstalled: numpy, pandas, matplotlib, scipy, sympy, beautifulsoup4, lxml, pillow, requests |
 | run_collect | NETWORKED off-box sandbox for "collect N things, then compute" — curl_cffi (browser-TLS HTTP) + camoufox (stealth headless Firefox) + numpy/pandas, network on, optional transient Tor. One script instead of many fetch calls |
+| preview_web | TRANSIENT live web preview: serve an HTML page or python app off-box + a free cloudflare quick tunnel → a public trycloudflare.com URL, live for ~15 min. For web design/interactive demos |
 | fetch_rendered | JS-rendered fetch via a headless browser (SPAs); heavy, rate-limited |
 
 ### Context-dependent tools
