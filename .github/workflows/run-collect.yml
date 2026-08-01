@@ -1,0 +1,105 @@
+name: run-collect
+run-name: run-collect ${{ inputs.rid }}
+
+# NETWORKED data-collection sandbox — the "collect N things, then compute" companion to run-code.
+# A submitted Python script runs WITH network access on an ephemeral, disposable GitHub-hosted runner
+# (isolated by the runner VM, destroyed after), with curl_cffi (browser-TLS-impersonating HTTP) +
+# camoufox (stealth headless Firefox) + a small data stack preinstalled. NO token permissions, NO
+# secrets in scope. Hard wall-clock bounded. Optional transient Tor (use_tor) for the runner's egress
+# — allowed for short-lived tasks; NOT for persistent onion services (that would violate Actions ToS).
+on:
+  workflow_dispatch:
+    inputs:
+      rid:
+        description: "correlation id (alnum)"
+        required: true
+      code_b64:
+        description: "gzip+base64 of the Python source to run"
+        required: true
+      use_tor:
+        description: "route egress through transient Tor (true/false)"
+        required: false
+        default: "false"
+
+permissions: {}          # the job's GITHUB_TOKEN gets nothing; no repo secrets in scope
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: decode
+        env:
+          CODE_B64: ${{ inputs.code_b64 }}     # via env, never interpolated into the shell
+        run: |
+          mkdir -p job
+          printf '%s' "$CODE_B64" | base64 -d | gunzip > job/user.py || { echo "decode failed" >&2; exit 2; }
+          bytes=$(wc -c < job/user.py)
+          echo "decoded $bytes bytes"
+          [ "$bytes" -le 200000 ] || { echo "code too large" >&2; exit 2; }
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: run-collect-pip-v2-curlcffi-camoufox-pandas-lxml-bs4
+
+      - name: install deps
+        run: |
+          python -m pip install -q --upgrade pip
+          pip install -q "curl_cffi" numpy pandas lxml beautifulsoup4 camoufox
+          python -m camoufox fetch >/dev/null 2>&1 || echo "camoufox browser fetch failed (curl_cffi still available)" >&2
+
+      - name: start transient Tor (optional)
+        if: ${{ inputs.use_tor == 'true' }}
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq tor
+          sudo service tor start
+          for i in $(seq 1 15); do (echo > /dev/tcp/127.0.0.1/9050) >/dev/null 2>&1 && break; sleep 1; done
+          echo "SANDBOX_PROXY=socks5://127.0.0.1:9050" >> "$GITHUB_ENV"
+
+      - name: run (networked sandbox)
+        env:
+          # If Tor is on, SANDBOX_PROXY (+ the standard proxy vars) point at it; the script reads
+          # SANDBOX_PROXY and passes it to curl_cffi/camoufox. Off = direct egress (empty var).
+          SANDBOX_PROXY: ${{ env.SANDBOX_PROXY }}
+        run: |
+          [ -n "$SANDBOX_PROXY" ] && export HTTP_PROXY="$SANDBOX_PROXY" HTTPS_PROXY="$SANDBOX_PROXY" ALL_PROXY="$SANDBOX_PROXY"
+          set +e
+          cd job
+          timeout 300 python -B user.py > ../out.txt 2> ../err.txt
+          echo $? > ../code.txt
+          set -e
+
+      - name: package result
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json
+          def rd(p, cap=100_000):
+              try:
+                  b = open(p, "rb").read(cap + 1)
+                  return b[:cap].decode("utf-8", "replace"), len(b) > cap
+              except Exception:
+                  return "", False
+          out, ot = rd("out.txt"); err, et = rd("err.txt")
+          try:
+              rc = int(open("code.txt").read().strip())
+          except Exception:
+              rc = None
+          json.dump({"exit_code": rc, "stdout": out, "stdout_truncated": ot,
+                     "stderr": err, "stderr_truncated": et,
+                     "timed_out": rc == 124}, open("result.json", "w"))
+          PY
+
+      - name: upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: result-${{ inputs.rid }}
+          path: result.json
+          retention-days: 1
