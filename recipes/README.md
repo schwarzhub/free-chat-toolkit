@@ -36,4 +36,9 @@ themselves (recipes that scrape abusively or risk an account ban are out). Auto-
 **only the generalized script + description — no chat data or PII.** Community-submitted and **unverified**
 until a maintainer reviews.
 
-*None yet — the first one gets saved the first time a chat solves something worth keeping.*
+## Available recipes
+
+- **[async_fanout_fetch.py](async_fanout_fetch.py)** — fetch many URLs concurrently in the
+   sandbox (bounded async fan-out with retries/backoff via curl_cffi). The
+  reference example of a moderately complex **async-style request run off-box on GitHub Actions**;
+  the natural fan-out step for an agentic task that must gather N sources before reasoning.
