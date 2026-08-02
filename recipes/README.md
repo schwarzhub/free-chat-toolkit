@@ -39,6 +39,6 @@ until a maintainer reviews.
 ## Available recipes
 
 - **[async_fanout_fetch.py](async_fanout_fetch.py)** — fetch many URLs concurrently in the
-   sandbox (bounded async fan-out with retries/backoff via curl_cffi). The
+  `run_collect` sandbox (bounded async fan-out with retries/backoff via curl_cffi). The
   reference example of a moderately complex **async-style request run off-box on GitHub Actions**;
   the natural fan-out step for an agentic task that must gather N sources before reasoning.
