@@ -69,7 +69,7 @@ jobs:
         run: |
           python3 - <<'PY'
           import json
-          def rd(p, cap=100_000):
+          def rd(p, cap=8_000_000):
               try:
                   b = open(p, "rb").read(cap + 1)
                   return b[:cap].decode("utf-8", "replace"), len(b) > cap
