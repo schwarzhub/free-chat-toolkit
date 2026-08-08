@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+<style>
+  :root {
+    --bg: #f1f5f9;
+    --card-bg: #fff;
+    --sidebar: #1e293b;
+    --sidebar-text: #cbd5e1;
+    --sidebar-active: #3b82f6;
+    --accent: #3b82f6;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,.08);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+  .sidebar { background: var(--sidebar); color: var(--sidebar-text); padding: 1.5rem; display: flex; flex-direction: column; gap: 2rem; }
+  .sidebar h2 { color: #fff; font-size: 1.25rem; }
+  .sidebar nav { display: flex; flex-direction: column; gap: .25rem; }
+  .sidebar a { color: var(--sidebar-text); text-decoration: none; padding: .5rem .75rem; border-radius: 8px; transition: .15s; }
+  .sidebar a:hover, .sidebar a.active { background: var(--sidebar-active); color: #fff; }
+  .main { padding: 1.5rem 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+  header { display: flex; justify-content: space-between; align-items: center; }
+  header h1 { font-size: 1.5rem; font-weight: 600; }
+  .badge { background: var(--accent); color: #fff; padding: .25rem .75rem; border-radius: 999px; font-size: .75rem; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+  .stat-card { background: var(--card-bg); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+  .stat-card .label { font-size: .875rem; color: var(--text-muted); }
+  .stat-card .value { font-size: 1.75rem; font-weight: 700; margin-top: .25rem; }
+  .stat-card .change { font-size: .75rem; color: #22c55e; }
+  table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+  th, td { padding: .75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+  th { background: var(--bg); font-weight: 600; font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+  .status { display: inline-block; padding: .125rem .625rem; border-radius: 999px; font-size: .75rem; font-weight: 500; }
+  .status.active { background: #dcfce7; color: #166534; }
+  .status.pending { background: #fef9c3; color: #854d0e; }
+  .status.inactive { background: #f1f5f9; color: #475569; }
+  @media (max-width: 768px) { body { grid-template-columns: 1fr; } .sidebar { display: none; } }
+</style>
+</head>
+<body>
+<aside class="sidebar" role="navigation" aria-label="Main navigation">
+  <h2>◈ AcmeCo</h2>
+  <nav>
+    <a href="#" class="active" aria-current="page">📊 Dashboard</a>
+    <a href="#">👥 Users</a>
+    <a href="#">📦 Products</a>
+    <a href="#">📈 Analytics</a>
+    <a href="#">⚙️ Settings</a>
+  </nav>
+  <div style="margin-top:auto;font-size:.875rem;">v2.4.1</div>
+</aside>
+<div class="main">
+  <header>
+    <h1>Dashboard</h1>
+    <span class="badge" role="status">Live</span>
+  </header>
+  <div class="stats" role="group" aria-label="Statistics">
+    <div class="stat-card"><div class="label">Total Revenue</div><div class="value">$48,295</div><div class="change">↑ 12.5%</div></div>
+    <div class="stat-card"><div class="label">Active Users</div><div class="value">2,847</div><div class="change">↑ 8.2%</div></div>
+    <div class="stat-card"><div class="label">Orders</div><div class="value">1,432</div><div class="change">↓ 3.1%</div></div>
+    <div class="stat-card"><div class="label">Conversion</div><div class="value">3.24%</div><div class="change">↑ 0.7%</div></div>
+  </div>
+  <table aria-label="Recent users">
+    <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Alice Chen</td><td>alice@acme.co</td><td>Admin</td><td><span class="status active">Active</span></td></tr>
+      <tr><td>Bob Martinez</td><td>bob@acme.co</td><td>Editor</td><td><span class="status active">Active</span></td></tr>
+      <tr><td>Carol Singh</td><td>carol@acme.co</td><td>Viewer</td><td><span class="status pending">Pending</span></td></tr>
+      <tr><td>Dave Thompson</td><td>dave@acme.co</td><td>Editor</td><td><span class="status inactive">Inactive</span></td></tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

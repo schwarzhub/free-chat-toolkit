@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ</title>
+<style>
+  :root { --bg: #f8fafc; --card: #fff; --text: #1e293b; --muted: #64748b; --primary: #6366f1; --radius: 10px; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: system-ui, sans-serif; background: var(--bg); min-height: 100vh; display: grid; place-items: center; padding: 2rem; }
+  .faq { max-width: 640px; width: 100%; }
+  .faq h1 { font-size: 1.75rem; margin-bottom: 1.5rem; text-align: center; }
+  details { background: var(--card); border-radius: var(--radius); margin-bottom: .75rem; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  details[open] { box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+  summary { padding: 1rem 1.25rem; cursor: pointer; font-weight: 500; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; font-size: 1.25rem; color: var(--primary); transition: transform .2s; }
+  details[open] summary::after { content: '−'; }
+  .answer { padding: 0 1.25rem 1.25rem; color: var(--muted); line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="faq" role="region" aria-label="Frequently asked questions">
+  <h1>Frequently Asked Questions</h1>
+  <details><summary>How do I reset my password?</summary><div class="answer">Go to Settings → Security → Reset Password. You'll receive a confirmation email with a secure link valid for 24 hours.</div></details>
+  <details><summary>Can I downgrade my plan?</summary><div class="answer">Yes — you can downgrade at any time from your Billing page. Changes take effect at the start of your next billing cycle.</div></details>
+  <details><summary>Is there a free trial?</summary><div class="answer">Absolutely. Every new account gets 14 days of full Pro features, no credit card required.</div></details>
+  <details><summary>How does billing work?</summary><div class="answer">We bill monthly or annually (annual gets 20% off). Invoices are sent via email and available in your account dashboard.</div></details>
+</div>
+</body>
+</html>

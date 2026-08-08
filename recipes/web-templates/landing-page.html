@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Landing Page</title>
+<style>
+  :root { --primary: #6366f1; --primary-dark: #4f46e5; --bg: #0f172a; --bg2: #1e293b; --text: #f1f5f9; --text-muted: #94a3b8; --radius: 12px; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; max-width: 1200px; margin: 0 auto; }
+  nav .logo { font-size: 1.5rem; font-weight: 700; }
+  nav a { color: var(--text-muted); text-decoration: none; margin-left: 1.5rem; }
+  nav a:hover { color: #fff; }
+  .btn { display: inline-block; background: var(--primary); color: #fff; padding: .75rem 1.5rem; border-radius: 999px; text-decoration: none; font-weight: 600; transition: .2s; }
+  .btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+  .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+  .btn-outline:hover { background: var(--primary); color: #fff; }
+  .hero { text-align: center; padding: 5rem 2rem 4rem; max-width: 800px; margin: 0 auto; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.15; }
+  .hero p { font-size: 1.125rem; color: var(--text-muted); margin: 1.5rem 0 2rem; }
+  .hero .buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 4rem; }
+  .feature-card { background: var(--bg2); border-radius: var(--radius); padding: 2rem; text-align: center; }
+  .feature-card .icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .feature-card h3 { margin-bottom: .5rem; }
+  .feature-card p { color: var(--text-muted); font-size: .9375rem; }
+  .pricing { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem 5rem; text-align: center; }
+  .pricing h2 { font-size: 2rem; margin-bottom: 2rem; }
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+  .plan { background: var(--bg2); border-radius: var(--radius); padding: 2rem; text-align: center; }
+  .plan.featured { border: 2px solid var(--primary); transform: scale(1.05); }
+  .plan .price { font-size: 2.5rem; font-weight: 800; margin: 1rem 0; }
+  .plan .price span { font-size: 1rem; font-weight: 400; color: var(--text-muted); }
+  .plan ul { list-style: none; color: var(--text-muted); margin: 1.5rem 0; }
+  .plan ul li { padding: .5rem 0; }
+  footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: .875rem; border-top: 1px solid var(--bg2); }
+</style>
+</head>
+<body>
+<nav role="navigation" aria-label="Site navigation">
+  <div class="logo">◈ Nebula</div>
+  <div>
+    <a href="#">Features</a>
+    <a href="#">Pricing</a>
+    <a href="#">Docs</a>
+    <a href="#" class="btn">Get Started</a>
+  </div>
+</nav>
+<section class="hero">
+  <h1>Build faster. Ship smarter.</h1>
+  <p>Nebula gives you the tools to build modern web apps in minutes — not days. Drag, drop, deploy.</p>
+  <div class="buttons">
+    <a href="#" class="btn">Start Free Trial</a>
+    <a href="#" class="btn btn-outline">See Demo</a>
+  </div>
+</section>
+<section class="features" aria-label="Features">
+  <div class="feature-card"><div class="icon" aria-hidden="true">⚡</div><h3>Lightning Fast</h3><p>Deploy globally in seconds with edge-optimized infrastructure.</p></div>
+  <div class="feature-card"><div class="icon" aria-hidden="true">🔒</div><h3>Enterprise Security</h3><p>SOC 2 compliant with end-to-end encryption built in.</p></div>
+  <div class="feature-card"><div class="icon" aria-hidden="true">🔄</div><h3>Real-time Sync</h3><p>Collaborate with your team in real-time, no conflicts.</p></div>
+</section>
+<section class="pricing" aria-label="Pricing plans">
+  <h2>Simple, transparent pricing</h2>
+  <div class="pricing-grid">
+    <div class="plan"><h3>Starter</h3><div class="price">$19<span>/mo</span></div><ul><li>5 projects</li><li>10GB storage</li><li>Basic analytics</li></ul><a href="#" class="btn btn-outline">Get Started</a></div>
+    <div class="plan featured"><h3>Pro</h3><div class="price">$49<span>/mo</span></div><ul><li>Unlimited projects</li><li>100GB storage</li><li>Advanced analytics</li><li>Priority support</li></ul><a href="#" class="btn">Get Started</a></div>
+    <div class="plan"><h3>Enterprise</h3><div class="price">$149<span>/mo</span></div><ul><li>Everything in Pro</li><li>Unlimited storage</li><li>Custom integrations</li><li>Dedicated support</li></ul><a href="#" class="btn btn-outline">Contact Sales</a></div>
+  </div>
+</section>
+<footer>© 2026 Nebula. All rights reserved.</footer>
+</body>
+</html>

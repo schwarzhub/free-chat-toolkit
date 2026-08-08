@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timeline</title>
+<style>
+  :root { --line: #cbd5e1; --dot: #6366f1; --card: #fff; --bg: #f8fafc; --text: #1e293b; --muted: #64748b; --radius: 10px; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 3rem 1rem; }
+  .timeline { max-width: 700px; margin: 0 auto; position: relative; }
+  .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--line); transform: translateX(-50%); }
+  .timeline h1 { text-align: center; font-size: 1.75rem; margin-bottom: 2.5rem; }
+  .entry { display: flex; align-items: flex-start; margin-bottom: 2rem; position: relative; }
+  .entry:nth-child(odd) { flex-direction: row; }
+  .entry:nth-child(even) { flex-direction: row-reverse; text-align: right; }
+  .entry .dot { width: 14px; height: 14px; background: var(--dot); border: 3px solid #fff; border-radius: 50%; position: absolute; left: 50%; top: 6px; transform: translateX(-50%); z-index: 1; box-shadow: 0 0 0 2px var(--dot); }
+  .entry .content { width: calc(50% - 2rem); background: var(--card); border-radius: var(--radius); padding: 1.25rem; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+  .entry .date { font-size: .75rem; color: var(--muted); margin-bottom: .25rem; }
+  .entry h3 { font-size: 1rem; margin-bottom: .25rem; }
+  .entry p { color: var(--muted); font-size: .875rem; }
+  @media (max-width: 600px) {
+    .timeline::before { left: 16px; }
+    .entry, .entry:nth-child(even) { flex-direction: row; text-align: left; }
+    .entry .dot { left: 16px; }
+    .entry .content { width: calc(100% - 3rem); margin-left: 3rem; }
+  }
+</style>
+</head>
+<body>
+<div class="timeline" role="list" aria-label="Project history timeline">
+  <h1>Project History</h1>
+  <div class="entry" role="listitem"><div class="dot" aria-hidden="true"></div><div class="content"><div class="date">Mar 2026</div><h3>v3.0 Launch</h3><p>Major redesign shipped with new dashboard and API v2.</p></div></div>
+  <div class="entry" role="listitem"><div class="dot" aria-hidden="true"></div><div class="content"><div class="date">Jan 2026</div><h3>Series A Funding</h3><p>Raised $12M led by Apex Ventures to scale the team.</p></div></div>
+  <div class="entry" role="listitem"><div class="dot" aria-hidden="true"></div><div class="content"><div class="date">Oct 2025</div><h3>10K Users</h3><p>Crossed 10,000 active users milestone.</p></div></div>
+  <div class="entry" role="listitem"><div class="dot" aria-hidden="true"></div><div class="content"><div class="date">Jul 2025</div><h3>Beta Launch</h3><p>First public beta with 500 invite-only users.</p></div></div>
+  <div class="entry" role="listitem"><div class="dot" aria-hidden="true"></div><div class="content"><div class="date">Mar 2025</div><h3>Company Founded</h3><p>Nebula Inc. was founded in San Francisco, CA.</p></div></div>
+</div>
+</body>
+</html>
